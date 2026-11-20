@@ -151,21 +151,20 @@ footer .cols{grid-template-columns:1fr}
 .sec{padding:56px 0}
 }
 
-.menu-btn{display:none;width:48px;height:48px;align-items:center;justify-content:center;background:transparent;border:2px solid var(--white);border-radius:8px;color:var(--white);cursor:pointer;padding:0}
-.menu-btn svg{width:26px;height:26px;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;fill:none}
-.menu-btn .x{display:none}
-.menu-btn[aria-expanded="true"] .bars{display:none}
-.menu-btn[aria-expanded="true"] .x{display:block}
-.scrim{display:none;position:fixed;inset:0;background:rgba(43,27,23,.5);z-index:15}
-.scrim.on{display:block}
 @media(max-width:1100px){nav{gap:18px}}
 @media(max-width:950px){
-.nav{flex-wrap:nowrap}
-.menu-btn{display:flex;margin-left:auto}
-nav{display:none;position:absolute;top:100%;left:0;right:0;background:var(--red);flex-direction:column;align-items:stretch;gap:0;padding:6px 28px 22px;font-size:17px;box-shadow:0 18px 24px rgba(43,27,23,.3);z-index:25;max-height:calc(100vh - 80px);overflow-y:auto}
-nav.open{display:flex}
-nav a{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.28)}
-nav .btn{margin-top:16px;text-align:center;border-bottom:2px solid var(--ink);padding:12px 20px}
+header{position:static}
+.nav{flex-direction:column;align-items:center;gap:12px;padding:16px 20px 18px}
+.logo{font-size:38px}
+nav{width:100%;justify-content:center;gap:8px;font-size:15px}
+nav a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border-radius:999px;background:rgba(255,255,255,.16);text-decoration:none}
+nav a:hover{background:rgba(255,255,255,.3);text-decoration:none}
+nav .btn{background:var(--ink);color:var(--cream);border:2px solid var(--ink);padding:0 20px;font-size:15px}
+nav .btn:hover{background:var(--ink);transform:none}
+}
+@media(max-width:520px){
+nav{gap:6px;font-size:14px}
+nav a{padding:0 14px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
 </style>
@@ -177,11 +176,7 @@ nav .btn{margin-top:16px;text-align:center;border-bottom:2px solid var(--ink);pa
 <header>
 <div class="nav">
 <a class="logo" href="#top">Grace Zacchaeus</a>
-<button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mainNav">
-<svg class="bars" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-<svg class="x" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
-</button>
-<nav id="mainNav" aria-label="Main">
+<nav aria-label="Main">
 <a href="#top">Home</a>
 <a href="#work">Book covers</a>
 <a href="#formatting">Formatting</a>
@@ -192,7 +187,6 @@ nav .btn{margin-top:16px;text-align:center;border-bottom:2px solid var(--ink);pa
 </nav>
 </div>
 </header>
-<div class="scrim" id="scrim"></div>
 
 <main id="top">
 
@@ -406,20 +400,6 @@ nav .btn{margin-top:16px;text-align:center;border-bottom:2px solid var(--ink);pa
 </footer>
 
 <script>
-(function(){
-var btn=document.getElementById('menuBtn'),nav=document.getElementById('mainNav'),scrim=document.getElementById('scrim');
-function set(open){
-nav.classList.toggle('open',open);scrim.classList.toggle('on',open);
-btn.setAttribute('aria-expanded',open?'true':'false');
-btn.setAttribute('aria-label',open?'Close menu':'Open menu');
-}
-btn.addEventListener('click',function(e){e.stopPropagation();set(btn.getAttribute('aria-expanded')!=='true')});
-scrim.addEventListener('click',function(){set(false)});
-document.addEventListener('click',function(e){if(nav.classList.contains('open')&&!nav.contains(e.target)&&e.target!==btn)set(false)});
-nav.addEventListener('click',function(e){if(e.target.closest('a'))set(false)});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nav.classList.contains('open')){set(false);btn.focus()}});
-window.addEventListener('resize',function(){if(window.innerWidth>950)set(false)});
-})();
 (function(){
 function ok(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
 function wire(id,errId,fields,msg){
