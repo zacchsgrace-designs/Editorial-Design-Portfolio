@@ -126,6 +126,14 @@ label{font-size:13px;font-weight:700;display:block;margin-bottom:4px}
 .q{background:var(--white);border-radius:16px;padding:28px;box-shadow:0 10px 24px rgba(43,27,23,.08)}
 .q p{margin:0 0 14px;font-weight:500}
 .q b{font-size:14px}
+.rv{display:flex;flex-direction:column}
+.rv-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.rv-av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--beige);color:var(--red);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:24px;object-fit:cover;overflow:hidden}
+img.rv-av{display:block}
+.rv-who b{display:block;font-size:16px}
+.rv-who span{display:block;font-size:13.5px;opacity:.75}
+.rv-stars{color:var(--orange);font-size:20px;letter-spacing:2px;line-height:1;margin-bottom:8px}
+.rv-book{font-family:'Playfair Display',serif;font-weight:700;font-style:italic;font-size:16px;margin-bottom:10px}
 
 details{background:var(--white);border-radius:12px;padding:18px 22px;margin:0 auto 12px;max-width:780px}
 summary{cursor:pointer;font-weight:700;min-height:28px}
@@ -395,11 +403,26 @@ button.play{cursor:pointer}
 <section class="sec" aria-labelledby="tt">
 <div class="wrap">
 <h2 id="tt" class="center">Reviews from authors</h2>
-<p class="lead center">Replace these with real reviews.</p>
+<p class="lead center">Real reviews from authors I've worked with.</p>
 <div class="quotes">
-<div class="q"><p>"[Testimonial about how the cover changed their launch.]"</p><b>[Author name], [Book title]</b></div>
-<div class="q"><p>"[Testimonial about the formatting being flawless and stress-free.]"</p><b>[Author name], [Book title]</b></div>
-<div class="q"><p>"[Testimonial about the communication and process.]"</p><b>[Author name], [Book title]</b></div>
+<article class="q rv">
+<div class="rv-top"><span class="rv-av" aria-hidden="true">A</span><div class="rv-who"><b>[Author name]</b><span>[Profession]</span></div></div>
+<div class="rv-stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="rv-book">[Book title]</div>
+<p>"[Paste review 1 here.]"</p>
+</article>
+<article class="q rv">
+<div class="rv-top"><span class="rv-av" aria-hidden="true">B</span><div class="rv-who"><b>[Author name]</b><span>[Profession]</span></div></div>
+<div class="rv-stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="rv-book">[Book title]</div>
+<p>"[Paste review 2 here.]"</p>
+</article>
+<article class="q rv">
+<div class="rv-top"><span class="rv-av" aria-hidden="true">C</span><div class="rv-who"><b>[Author name]</b><span>[Profession]</span></div></div>
+<div class="rv-stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="rv-book">[Book title]</div>
+<p>"[Paste review 3 here.]"</p>
+</article>
 </div>
 </div>
 </section>
