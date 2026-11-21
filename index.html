@@ -126,7 +126,17 @@ label{font-size:13px;font-weight:700;display:block;margin-bottom:4px}
 .q{background:var(--white);border-radius:16px;padding:28px;box-shadow:0 10px 24px rgba(43,27,23,.08)}
 .q p{margin:0 0 14px;font-weight:500}
 .q b{font-size:14px}
-@media(min-width:901px){.quotes.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.quotes{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px 4px 22px;margin:0 -4px;-webkit-overflow-scrolling:touch}
+.quotes::-webkit-scrollbar{display:none}
+.quotes:focus-visible{outline:3px solid var(--ink);outline-offset:2px;border-radius:12px}
+.quotes .q{flex:0 0 calc(50% - 11px);scroll-snap-align:start;min-width:0}
+.rvnav{display:flex;gap:12px;justify-content:center;margin-top:4px}
+.rvbtn{width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:var(--white);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.rvbtn svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.rvbtn:hover:not(:disabled){background:var(--red);border-color:var(--red);color:var(--white)}
+.rvbtn:disabled{opacity:.35;cursor:default}
+.rvbtn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+@media(max-width:700px){.quotes .q{flex-basis:100%}}
 .rv{display:flex;flex-direction:column}
 .rv-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
 .rv-av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--beige);color:var(--red);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:24px;object-fit:cover;overflow:hidden}
@@ -406,7 +416,8 @@ button.play{cursor:pointer}
 <div class="wrap">
 <h2 id="tt" class="center">Reviews from authors</h2>
 <p class="lead center">Real reviews from authors I've worked with.</p>
-<div class="quotes four">
+<div class="rvwrap">
+<div class="quotes" id="rvTrack" tabindex="0" aria-label="Author reviews">
 <article class="q rv">
 <div class="rv-top"><img class="rv-av" src="review-hal-manogue.jpg" alt="Hal Manogue"><div class="rv-who"><b>Hal Manogue</b><span>Award-Winning Poet and Author</span></div></div>
 <div class="rv-stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
@@ -435,6 +446,9 @@ button.play{cursor:pointer}
 <p>"Grace got right back to me and repeated what I had asked for in a very orderly, detail-oriented response. She sent examples of what I had asked for right away and had variations to choose from. I would highly recommend Grace for cover design and cover art."</p>
 <div class="rv-svc">Book cover design and cover art</div>
 </article>
+</div>
+<div class="rvnav"><button class="rvbtn" id="rvPrev" type="button" aria-label="Previous reviews"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="rvbtn" id="rvNext" type="button" aria-label="Next reviews"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
+</div>
 </div>
 </div>
 </section>
@@ -492,6 +506,19 @@ button.play{cursor:pointer}
 </div>
 
 <script>
+(function(){
+var t=document.getElementById('rvTrack'),p=document.getElementById('rvPrev'),n=document.getElementById('rvNext');
+if(!t||!p||!n)return;
+function step(){var c=t.querySelector('.q');return c?c.getBoundingClientRect().width+22:300}
+function upd(){p.disabled=t.scrollLeft<=2;n.disabled=t.scrollLeft+t.clientWidth>=t.scrollWidth-2}
+function go(d){var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;t.scrollBy({left:d*step(),behavior:rm?'auto':'smooth'})}
+p.addEventListener('click',function(){go(-1)});
+n.addEventListener('click',function(){go(1)});
+t.addEventListener('scroll',upd,{passive:true});
+t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}});
+window.addEventListener('resize',upd);
+upd();
+})();
 (function(){
 var lb=document.getElementById('lb'),stage=document.getElementById('lbStage'),img=document.getElementById('lbImg'),
 cap=document.getElementById('lbCap'),count=document.getElementById('lbCount'),thumbs=document.getElementById('lbThumbs'),
