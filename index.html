@@ -126,6 +126,7 @@ label{font-size:13px;font-weight:700;display:block;margin-bottom:4px}
 .q{background:var(--white);border-radius:16px;padding:28px;box-shadow:0 10px 24px rgba(43,27,23,.08)}
 .q p{margin:0 0 14px;font-weight:500}
 .q b{font-size:14px}
+@media(min-width:861px){.quotes.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .rv{display:flex;flex-direction:column}
 .rv-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
 .rv-av{flex:none;width:56px;height:56px;border-radius:50%;background:var(--beige);color:var(--red);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-weight:700;font-size:24px;object-fit:cover;overflow:hidden}
@@ -405,7 +406,7 @@ button.play{cursor:pointer}
 <div class="wrap">
 <h2 id="tt" class="center">Reviews from authors</h2>
 <p class="lead center">Real reviews from authors I've worked with.</p>
-<div class="quotes">
+<div class="quotes four">
 <article class="q rv">
 <div class="rv-top"><img class="rv-av" src="review-hal-manogue.jpg" alt="Hal Manogue"><div class="rv-who"><b>Hal Manogue</b><span>Award-Winning Poet and Author</span></div></div>
 <div class="rv-stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
@@ -426,6 +427,13 @@ button.play{cursor:pointer}
 <div class="rv-book">Finalizing an EPUB for an ebook</div>
 <p>"Grace was able to complete the task successfully. In addition, she was very responsive and delivered quality results."</p>
 <div class="rv-svc">EPUB finalizing</div>
+</article>
+<article class="q rv">
+<div class="rv-top"><img class="rv-av" src="review-upwork-client.jpg" alt="Upwork logo"><div class="rv-who"><b>Dave</b><span>Author</span></div></div>
+<div class="rv-stars" role="img" aria-label="5 out of 5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="rv-book">Cover design for a steamy hockey romance novel</div>
+<p>"Grace got right back to me and repeated what I had asked for in a very orderly, detail-oriented response. She sent examples of what I had asked for right away and had variations to choose from. I would highly recommend Grace for cover design and cover art."</p>
+<div class="rv-svc">Book cover design and cover art</div>
 </article>
 </div>
 </div>
