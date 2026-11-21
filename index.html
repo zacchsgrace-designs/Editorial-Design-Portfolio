@@ -59,6 +59,8 @@ nav .btn{padding:10px 20px;font-size:14px;min-height:44px}
 
 .row{display:flex;flex-wrap:wrap;justify-content:center;gap:28px 24px;margin-top:8px}
 .tc{margin:0;text-align:center;width:240px}
+.tc.wide{width:min(520px,100%)}
+.tc.wide img{aspect-ratio:auto;height:auto}
 .zoom{position:relative;display:block;width:100%;padding:0;border:0;background:none;cursor:zoom-in;border-radius:4px 8px 8px 4px;font:inherit}
 .zoom:focus-visible{outline:3px solid var(--ink);outline-offset:4px}
 .badge{position:absolute;right:10px;bottom:10px;background:rgba(43,27,23,.82);color:var(--cream);font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px}
@@ -320,11 +322,9 @@ button.play{cursor:pointer}
 <section class="sec" id="formatting" style="background:var(--beige)" aria-labelledby="fm">
 <div class="wrap">
 <h2 id="fm">Interior formatting</h2>
-<p class="lead">Clean, readable pages for print and ebook. Sample spreads are coming soon.</p>
-<div class="pages">
-<div class="pg"><i></i><i></i><i></i><span>[Chapter opening]</span><i></i><i></i></div>
-<div class="pg"><i></i><i></i><i></i><i></i><span>[Text page]</span><i></i></div>
-<div class="pg"><i></i><i></i><span>[Table of contents]</span><i></i><i></i><i></i></div>
+<p class="lead">Clean, readable pages for print and ebook. Tap a sample to flip through its pages.</p>
+<div class="row">
+<figure class="tc wide"><button class="zoom" type="button" data-title="In the Yard of Miffery with Doves, interior formatting" data-images="formatting-miffery-mockup.jpg|formatting-miffery-page-1.jpg|formatting-miffery-page-2.jpg|formatting-miffery-page-3.jpg" data-captions="Printed book mockup, pages 24 and 25|Special thanks, page 11|Interior, page 24|Interior, page 25" aria-label="Open In the Yard of Miffery with Doves interior formatting, 4 images"><img src="formatting-miffery-mockup.jpg" alt="Open book mockup showing the interior formatting of In the Yard of Miffery with Doves, two pages of centered poetry on white pages"><span class="badge">4 images</span></button><figcaption>In the Yard of Miffery with Doves<span>Poetry &middot; Hal Manogue &middot; Interior formatting</span></figcaption></figure>
 </div>
 </div>
 </section>
