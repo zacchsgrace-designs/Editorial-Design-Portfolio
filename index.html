@@ -53,11 +53,13 @@ nav .btn{padding:10px 20px;font-size:14px;min-height:44px}
 .hs img{display:block;max-width:100%;max-height:100%;width:auto;height:auto;border-radius:4px 8px 8px 4px;box-shadow:0 26px 38px rgba(43,27,23,.45)}
 .show-meta{margin-top:6px;min-height:52px}
 .show-cap{display:block;font-weight:700;font-size:15px;margin-bottom:10px;min-height:1.3em}
+.show-pause{margin-top:10px;background:transparent;border:1.5px solid rgba(255,255,255,.7);color:var(--white);border-radius:999px;padding:4px 14px;font:inherit;font-size:12.5px;font-weight:600;cursor:pointer}
+.show-pause:focus-visible{outline:3px solid var(--white);outline-offset:3px}
 .show-dots{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 .show-dots button{width:10px;height:10px;border-radius:50%;border:0;padding:0;background:rgba(255,255,255,.45);cursor:pointer}
 .show-dots button[aria-current="true"]{background:var(--white);transform:scale(1.25)}
 .show-dots button:focus-visible{outline:3px solid var(--white);outline-offset:3px}
-@media(prefers-reduced-motion:reduce){.hs{transition:none}}
+@media(prefers-reduced-motion:reduce){.hs,.hs.out{transform:none;transition:opacity .6s ease}}
 .herobook{justify-self:center;width:min(300px,80%);border-radius:4px 8px 8px 4px;box-shadow:0 30px 40px rgba(43,27,23,.45),-4px 0 0 rgba(0,0,0,.18);transform:rotate(-3deg);display:block}
 .hero h1{font-size:clamp(40px,5.2vw,68px);margin:12px 0 20px;font-weight:700}
 .hero p{font-size:18px;max-width:520px;margin:0 0 28px}
@@ -160,6 +162,7 @@ label{font-size:13px;font-weight:700;display:block;margin-bottom:4px}
 .rvbtn{width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:var(--white);color:var(--ink);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
 .rvbtn svg{width:22px;height:22px;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;fill:none}
 .rvbtn:hover:not(:disabled){background:var(--red);border-color:var(--red);color:var(--white)}
+.rvpause .ic-play{display:none}.rvpause.off .ic-play{display:block}.rvpause.off .ic-pause{display:none}
 .rvbtn:disabled{opacity:.35;cursor:default}
 .rvbtn:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
 @media(max-width:700px){.quotes .q{flex-basis:100%}}
@@ -282,7 +285,8 @@ button.play{cursor:pointer}
 <div class="wrap">
 <div class="show" id="heroShow" role="region" aria-roledescription="carousel" aria-label="Selected work">
 <div class="show-stage" id="heroStage"><div class="hs on"><img src="cover-clear-mind.jpg" alt="Clear Mind, Full Life book cover designed by Grace Zacchaeus"></div></div>
-<div class="show-meta"><span class="show-cap" id="heroCap"></span><div class="show-dots" id="heroDots"></div></div>
+<div class="show-meta"><span class="show-cap" id="heroCap"></span><div class="show-dots" id="heroDots"></div>
+<button class="show-pause" id="heroPause" type="button" aria-pressed="false">Pause</button></div>
 </div>
 <div>
 <span class="tag">Editorial designer &middot; Book cover designer &middot; Book formatter</span>
@@ -500,7 +504,7 @@ button.play{cursor:pointer}
 <div class="rv-svc">Book cover design and cover art</div>
 </article>
 </div>
-<div class="rvnav"><button class="rvbtn" id="rvPrev" type="button" aria-label="Previous reviews"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="rvbtn" id="rvNext" type="button" aria-label="Next reviews"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
+<div class="rvnav"><button class="rvbtn" id="rvPrev" type="button" aria-label="Previous reviews"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button><button class="rvbtn rvpause" id="rvPause" type="button" aria-pressed="false" aria-label="Pause reviews"><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-pause"><path d="M9 6v12M15 6v12"/></svg><svg viewBox="0 0 24 24" aria-hidden="true" class="ic-play"><path d="M8 5l11 7-11 7z"/></svg></button><button class="rvbtn" id="rvNext" type="button" aria-label="Next reviews"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button></div>
 </div>
 </div>
 </div>
@@ -571,21 +575,23 @@ t.addEventListener('scroll',upd,{passive:true});
 t.addEventListener('keydown',function(e){if(e.key==='ArrowRight'){e.preventDefault();go(1)}else if(e.key==='ArrowLeft'){e.preventDefault();go(-1)}});
 window.addEventListener('resize',upd);
 upd();
-var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches,timer=null,paused=false,visible=true;
+var rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches,timer=null,paused=false,visible=true,userOff=false;
 function tick(){
 if(paused||!visible||document.hidden)return;
 if(t.scrollLeft+t.clientWidth>=t.scrollWidth-2){t.scrollTo({left:0,behavior:'smooth'})}else{go(1)}
 }
-function start(){if(rm||timer)return;timer=setInterval(tick,4500)}
+function start(){if(timer||userOff)return;timer=setInterval(tick,4500)}
 function stop(){clearInterval(timer);timer=null}
 function hold(){paused=true}
 function release(){paused=false}
-t.addEventListener('mouseenter',hold);t.addEventListener('mouseleave',release);
-t.addEventListener('focusin',hold);t.addEventListener('focusout',release);
+t.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')hold()});t.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')release()});
+t.addEventListener('focusin',function(e){if(e.target.matches&&e.target.matches(':focus-visible'))hold()});t.addEventListener('focusout',release);
 t.addEventListener('touchstart',hold,{passive:true});
 t.addEventListener('touchend',function(){setTimeout(release,6000)},{passive:true});
 [p,n].forEach(function(b){b.addEventListener('click',function(){stop();start()})});
-if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting},{threshold:.3}).observe(t)}
+if('IntersectionObserver' in window){new IntersectionObserver(function(es){visible=es[0].isIntersecting},{threshold:.15}).observe(t)}
+var pb=document.getElementById('rvPause');
+if(pb)pb.addEventListener('click',function(){userOff=!userOff;pb.setAttribute('aria-pressed',userOff?'true':'false');pb.setAttribute('aria-label',userOff?'Play reviews':'Pause reviews');pb.classList.toggle('off',userOff);if(userOff)stop();else start()});
 start();
 })();
 (function(){
@@ -616,7 +622,7 @@ var d=document.createElement('div'),im=document.createElement('img');
 d.className='hs';im.src=it.src;im.alt=it.alt;if(i>0)im.loading='lazy';
 d.appendChild(im);box.appendChild(d);return d;
 });
-var cur=0,timer=null,paused=false,rm=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var cur=0,timer=null,paused=false,userOff=false;
 var dotEls=items.map(function(it,i){
 var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Show work '+(i+1)+': '+it.title);
 b.addEventListener('click',function(){show(i);restart()});dots.appendChild(b);return b;
@@ -633,12 +639,14 @@ dotEls.forEach(function(d,k){if(k===cur)d.setAttribute('aria-current','true');el
 }
 slides[0].classList.add('on');cap.textContent=items[0].title;dotEls[0].setAttribute('aria-current','true');
 function restart(){if(timer){clearInterval(timer);timer=null}start()}
-function start(){if(rm||timer)return;timer=setInterval(function(){if(!paused&&!document.hidden)show(cur+1)},3500)}
+function start(){if(timer||userOff)return;timer=setInterval(function(){if(!paused&&!document.hidden)show(cur+1)},3500)}
 var sec=document.getElementById('heroShow');
-sec.addEventListener('mouseenter',function(){paused=true});
-sec.addEventListener('mouseleave',function(){paused=false});
-sec.addEventListener('focusin',function(){paused=true});
+sec.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse')paused=true});
+sec.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse')paused=false});
+sec.addEventListener('focusin',function(e){if(e.target.matches&&e.target.matches(':focus-visible'))paused=true});
 sec.addEventListener('focusout',function(){paused=false});
+var hp=document.getElementById('heroPause');
+if(hp)hp.addEventListener('click',function(){userOff=!userOff;hp.textContent=userOff?'Play':'Pause';hp.setAttribute('aria-pressed',userOff?'true':'false');if(userOff){clearInterval(timer);timer=null}else start()});
 start();
 })();
 (function(){
